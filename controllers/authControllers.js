@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const PostRegister = require('../services/PostRegister');
-const PostRegisterInstance = new PostRegister();
+const Register = require('../services/Register');
+const RegisterInstance = new Register();
 
 // revisamos si el user no está ya logueado usando la función helper (chequeamos si existe req.session.currentUser)
     //isNotLoggedIn(),
@@ -9,7 +9,7 @@ const PostRegisterInstance = new PostRegister();
     //validationLoggin(),
     exports.register = async (req, res, next) => {
         try{
-            const createdUser = await PostRegisterInstance.create(req.body);
+            const createdUser = await RegisterInstance.create(req.body);
             return res.send(createdUser);
         } catch (err){
             res.status(500).send(err);

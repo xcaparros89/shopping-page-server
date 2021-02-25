@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "test": "mocha ./tests/Auth"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -21,5 +22,10 @@
     "morgan": "~1.9.1",
     "nodemon": "^2.0.7",
     "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.0",
+    "mocha": "^8.3.0",
+    "nyc": "^15.1.0"
   }
 }

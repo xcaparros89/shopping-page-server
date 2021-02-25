@@ -1,7 +1,7 @@
 const MongooseService = require( "./MongooseService" ); // Data Access Layer
 const UserModel = require( "../models/user" ); // Database Model
 
-class PostRegister {
+class Register {
   /**
    * @description Create an instance of PostService
    */
@@ -26,4 +26,4 @@ class PostRegister {
   }
 }
 
-module.exports = PostRegister;
+module.exports = Register;
