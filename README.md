@@ -3,7 +3,7 @@
 ## What is this project?
 
 Shopping page to buy plants
-You can see the repository for the back-end here: https://github.com/xcaparros89/shopping-sever
+You can see the repository for the back-end here: https://github.com/xcaparros89/shopping-page
 
 ## Technologies used
 
