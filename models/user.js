@@ -5,7 +5,12 @@ const userSchema = new Schema({
   username: String,
   email: String,
   password: String,
-  adress: String,
+  address: String,
+  name: String,
+  surnames: String,
+  city: String,
+  state: String,
+  zip: String
 }, {
   timestamps: {
     createdAt: 'created_at',
