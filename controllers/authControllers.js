@@ -7,6 +7,7 @@ const LoginInstance = new Login();
 
     exports.register = async (req, res, next) => {
         try{
+            console.log('authControllers')
             const createdUser = await RegisterInstance.create(req.body);
             return res.send(createdUser);
         } catch (err){
