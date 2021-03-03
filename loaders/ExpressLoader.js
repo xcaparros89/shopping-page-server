@@ -9,6 +9,7 @@ var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
 var authRouter = require('../routes/auth');
 var itemRouter = require('../routes/item');
+var categoryRouter = require('../routes/category');
 
 
 const hbs = require("hbs");
@@ -43,6 +44,7 @@ class ExpressLoader {
     app.use("/users", usersRouter);
     app.use("/auth", authRouter);
     app.use("/item", itemRouter);
+    app.use("/category", categoryRouter);
 
     // Start application
     this.server = app.listen(4000, () => {
