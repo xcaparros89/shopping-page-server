@@ -13,7 +13,7 @@ const CategoryInstance = new Category();
     }
     exports.findOne = async (req, res, next) => {
         try{
-            const createdCategory = await CategoryInstance.find(req.body);
+            const createdCategory = await CategoryInstance.findOne({[req.params.key]:req.params.value});
             return res.send(createdCategory);
         } catch (err){
             res.status(500).send(err);
@@ -26,6 +26,7 @@ const CategoryInstance = new Category();
         } catch (err){
             res.status(500).send(err);
         }
+    }
 
     exports.update = async (req, res, next) => {
         try{
@@ -35,12 +36,11 @@ const CategoryInstance = new Category();
             res.status(500).send(err);
         }
     }
-    exports.delete = async (req, res, next) => {
-        try{
-            const deletedCategory = await CategoryInstance.delete(req.body);
-            return res.send(deletedCategory);
-        } catch (err){
-            res.status(500).send(err);
-        }
-    }
-}
+    // exports.delete = async (req, res, next) => {
+    //     try{
+    //         const deletedCategory = await CategoryInstance.delete(req.body);
+    //         return res.send(deletedCategory);
+    //     } catch (err){
+    //         res.status(500).send(err);
+    //     }
+    // }

@@ -34,7 +34,7 @@ class Category {
   }
   async findOne(params) {
     try {
-      const result = await this.MongooseServiceInstance.find({params});
+      const result = await this.MongooseServiceInstance.findOne(params);
       return { success: true, body: result };
     } catch ( err ) {
       return { success: false, error: err };
@@ -42,7 +42,18 @@ class Category {
   }
   async update(params) {
     try {
-      const result = await this.MongooseServiceInstance.update({params});
+      //const user = await this.MongooseServiceInstance.findOne({_id: params._id});
+      const {_id, title, description, discount} = params;
+      if(!title | !description){
+        return { success: false, error: 'Title and description are mandatory' };
+      }
+      if(!_id){
+        return { success: false, error: 'Need id' };
+      }
+      const result = await this.MongooseServiceInstance.update({_id}, {title, description, discount});
+      if(!result){
+        return { success: false, error: 'Cannot find the item in the database' };
+      }
       return { success: true, body: result };
     } catch ( err ) {
       return { success: false, error: err };
