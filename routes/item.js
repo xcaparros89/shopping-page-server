@@ -5,7 +5,9 @@ const createError = require("http-errors");
 const itemController = require('../controllers/itemController')
 
 
-router.get("/search",itemController.find);
+router.get("/findAll",itemController.findAll);
+router.get("/findOne/:key/:value",itemController.findOne);
 router.post("/create",itemController.create);
+router.post("/update", itemController.update);
 //add or remove category
 module.exports = router;

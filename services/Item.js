@@ -24,10 +24,44 @@ class Item {
       return { success: false, error: err };
     }
   }
-  async find(params) {
+  async findAll() {
     try {
-        console.log(params);
       const result = await this.MongooseServiceInstance.find({});
+      return { success: true, body: result };
+    } catch ( err ) {
+      return { success: false, error: err };
+    }
+  }
+  async findOne(params) {
+    try {
+      const result = await this.MongooseServiceInstance.findOne(params);
+      return { success: true, body: result };
+    } catch ( err ) {
+      return { success: false, error: err };
+    }
+  }
+  async update(params) {
+    try {
+      //const user = await this.MongooseServiceInstance.findOne({_id: params._id});
+      const {_id, title, description, price, tags} = params;
+      if(!title | !description | !price | !tags){
+        return { success: false, error: 'Title, description, price and tags are mandatory' };
+      }
+      if(!_id){
+        return { success: false, error: 'Need id' };
+      }
+      const result = await this.MongooseServiceInstance.update({_id}, {title, description, price, tags});
+      if(!result){
+        return { success: false, error: 'Cannot find the item in the database' };
+      }
+      return { success: true, body: result };
+    } catch ( err ) {
+      return { success: false, error: err };
+    }
+  }
+  async delete(params) {
+    try {
+      const result = await this.MongooseServiceInstance.delete({params});
       return { success: true, body: result };
     } catch ( err ) {
       return { success: false, error: err };

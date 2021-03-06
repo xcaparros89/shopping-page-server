@@ -1,16 +1,25 @@
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
 const Item = require('../services/Item');
 const ItemInstance = new Item();
 
-    exports.find = async (req, res, next) => {
+    exports.findAll = async (req, res, next) => {
         try{
-            const createdItem = await ItemInstance.find(req.body);
+            const allItems = await ItemInstance.findAll();
+            return res.send(allItems);
+        } catch (err){
+            res.status(500).send(err);
+        }
+    }
+
+    exports.findOne = async (req, res, next) => {
+        try{
+            console.log({[req.params.key]:req.params.value})
+            const createdItem = await ItemInstance.findOne({[req.params.key]:req.params.value});
             return res.send(createdItem);
         } catch (err){
             res.status(500).send(err);
         }
     }
+
     exports.create = async (req, res, next) => {
         try{
             const createdItem = await ItemInstance.create(req.body);
@@ -20,4 +29,11 @@ const ItemInstance = new Item();
         }
     }
 
-    
+        exports.update = async (req, res, next) => {
+        try{
+            const updatedItem = await ItemInstance.update(req.body);
+            return res.send(updatedItem);
+        } catch (err){
+            res.status(500).send(err);
+        }
+    }
