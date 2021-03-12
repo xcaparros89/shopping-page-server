@@ -43,14 +43,15 @@ class Item {
   async update(params) {
     try {
       //const user = await this.MongooseServiceInstance.findOne({_id: params._id});
-      const {_id, title, description, price, tags} = params;
-      if(!title | !description | !price | !tags){
-        return { success: false, error: 'Title, description, price and tags are mandatory' };
+      const {_id, title, description, price, tags, img, discount} = params;
+      if(!title | !description | !price | !tags | !img){
+        //fes un loop que torni els fields que estan buits.
+        return { success: false, error: 'Title, de are mandatory' };
       }
       if(!_id){
         return { success: false, error: 'Need id' };
       }
-      const result = await this.MongooseServiceInstance.update({_id}, {title, description, price, tags});
+      const result = await this.MongooseServiceInstance.update({_id}, {title, description, price, tags, img, discount});
       if(!result){
         return { success: false, error: 'Cannot find the item in the database' };
       }

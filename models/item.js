@@ -5,6 +5,8 @@ const itemSchema = new Schema({
   title: String,
   description: String,
   price: Number,
+  discount: {type:Number, default:0},
+  img: String,
   tags: [String],
 }, {
   timestamps: {

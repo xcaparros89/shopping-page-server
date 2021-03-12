@@ -29,8 +29,8 @@ class ExpressLoader {
 
     //app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
+    // app.use(bodyParser.json());
+    // app.use(bodyParser.urlencoded({ extended: false }));
 
     // ADD CORS SETTINGS HERE TO ALLOW CROSS-ORIGIN INTERACTION:
 
