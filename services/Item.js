@@ -18,18 +18,31 @@ class Item {
    */
   async create ( itemToCreate ) {
     try {
-      const result = await this.MongooseServiceInstance.create( itemToCreate );
+      const {title, description, price, tags, img, discount} = itemToCreate;
+      if(!title | !description | !price | !tags | !img){
+        //fes un loop que torni els fields que estan buits.
+        return { success: false, body: 'Title, description, price, tags and img are mandatory' };
+      }
+      const sameTitle = await this.MongooseServiceInstance.findOne({title})
+      if(sameTitle){
+        return {success:false, body:'There is already a item with the same title in the database'}
+      }
+      const result = await this.MongooseServiceInstance.create( {title, description, price, tags, img, discount} );
       return { success: true, body: result };
     } catch ( err ) {
-      return { success: false, error: err };
+      return { success: false, body: err };
     }
   }
   async findAll() {
     try {
       const result = await this.MongooseServiceInstance.find({});
-      return { success: true, body: result };
+      if (result.length) {
+        return { success: true, body: result };
+      } else {
+        return { success: false, body: "No items found" };
+      }
     } catch ( err ) {
-      return { success: false, error: err };
+      return { success: false, body: err };
     }
   }
   async findOne(params) {
@@ -37,7 +50,7 @@ class Item {
       const result = await this.MongooseServiceInstance.findOne(params);
       return { success: true, body: result };
     } catch ( err ) {
-      return { success: false, error: err };
+      return { success: false, body: "No items found"  };
     }
   }
   async update(params) {
@@ -46,18 +59,15 @@ class Item {
       const {_id, title, description, price, tags, img, discount} = params;
       if(!title | !description | !price | !tags | !img){
         //fes un loop que torni els fields que estan buits.
-        return { success: false, error: 'Title, de are mandatory' };
+        return { success: false, body: 'Title, description, price, tags and img are mandatory' };
       }
       if(!_id){
-        return { success: false, error: 'Need id' };
+        return { success: false, body: 'No id sended' };
       }
       const result = await this.MongooseServiceInstance.update({_id}, {title, description, price, tags, img, discount});
-      if(!result){
-        return { success: false, error: 'Cannot find the item in the database' };
-      }
       return { success: true, body: result };
     } catch ( err ) {
-      return { success: false, error: err };
+      return { success: false, body: 'Cannot find the item in the database'  };
     }
   }
   async delete(params) {
@@ -65,7 +75,7 @@ class Item {
       const result = await this.MongooseServiceInstance.delete({params});
       return { success: true, body: result };
     } catch ( err ) {
-      return { success: false, error: err };
+      return { success: false, body: err };
     }
   }
 }

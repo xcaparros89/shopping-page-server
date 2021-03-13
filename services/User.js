@@ -1,14 +1,14 @@
-const MongooseService = require("./MongooseService"); // Data Access Layer
-const UserModel = require("../models/user"); // Database Model
+const MongooseService = require( "./MongooseService" ); // Data Access Layer
+const UserModel = require( "../models/user" ); // Database Model
 const bcrypt = require("bcryptjs");
 
-class Register {
+class User {
   /**
    * @description Create an instance of PostService
    */
-  constructor() {
+  constructor () {
     // Create instance of Data Access layer using our desired model
-    this.MongooseServiceInstance = new MongooseService(UserModel);
+    this.MongooseServiceInstance = new MongooseService( UserModel );
   }
 
   /**
@@ -17,7 +17,20 @@ class Register {
    * create post
    * @returns {Promise<{success: boolean, error: *}|{success: boolean, body: *}>}
    */
-  async create({
+  async login(params) {
+    try {
+        console.log('params');
+      const result = await this.MongooseServiceInstance.findOne({username: params.username});
+      if(result === null || !bcrypt.compareSync(params.password, result.password)){
+          return {success:false, body:'The user and/or password are incorrect'}
+      }
+      return { success: true, body: result };
+    } catch ( err ) {
+      return { success: false, error: err };
+    }
+  }
+
+  async register({
     username,
     email,
     password,
@@ -44,7 +57,7 @@ class Register {
       }
       const user = await this.MongooseServiceInstance.findOne({ email: email });
       if (user !== null) {
-        return { success: false, body: "This email is already registered" };
+        return { success: false, body: "This email is already used" };
       }
 
       const repeatedUser = await this.MongooseServiceInstance.findOne({ username: username });
@@ -71,4 +84,4 @@ class Register {
   }
 }
 
-module.exports = Register;
+module.exports = User;

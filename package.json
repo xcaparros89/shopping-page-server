@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "test": "jest",
-    "test-w": "jest --watchAll"
+    "test": "jest --runInBand",
+    "test-w": "jest --watchAll --runInBand"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

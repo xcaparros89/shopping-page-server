@@ -1,13 +1,13 @@
-const MongooseService = require( "./MongooseService" ); // Data Access Layer
-const CategoryModel = require( "../models/category" ); // Database Model
+const MongooseService = require("./MongooseService"); // Data Access Layer
+const CategoryModel = require("../models/category"); // Database Model
 
 class Category {
   /**
    * @description Create an instance of category
    */
-  constructor () {
+  constructor() {
     // Create instance of Data Access layer using our desired model
-    this.MongooseServiceInstance = new MongooseService( CategoryModel );
+    this.MongooseServiceInstance = new MongooseService(CategoryModel);
   }
 
   /**
@@ -16,54 +16,65 @@ class Category {
    * create post
    * @returns {Promise<{success: boolean, error: *}|{success: boolean, body: *}>}
    */
-  async create ( categoryToCreate ) {
+  async create(categoryToCreate) {
     try {
-      const result = await this.MongooseServiceInstance.create( categoryToCreate );
+      const {title, description} = categoryToCreate;
+      if (!title | !description) {
+        return { success: false, body: "Title and description are mandatory" };
+      }
+      const result = await this.MongooseServiceInstance.create(
+        categoryToCreate
+      );
       return { success: true, body: result };
-    } catch ( err ) {
+    } catch (err) {
       return { success: false, error: err };
     }
   }
   async findAll() {
     try {
       const result = await this.MongooseServiceInstance.find({});
-      return { success: true, body: result };
-    } catch ( err ) {
+      if (result.length) {
+        return { success: true, body: result };
+      } else {
+        return { success: false, body: "No categories found" };
+      }
+    } catch (err) {
       return { success: false, error: err };
     }
   }
   async findOne(params) {
     try {
       const result = await this.MongooseServiceInstance.findOne(params);
-      return { success: true, body: result };
-    } catch ( err ) {
-      return { success: false, error: err };
+        return { success: true, body: result };
+    } catch (err) {
+      return { success: false, body: "No categories found" };
     }
   }
   async update(params) {
     try {
       //const user = await this.MongooseServiceInstance.findOne({_id: params._id});
-      const {_id, title, description, discount} = params;
-      if(!title | !description){
-        return { success: false, error: 'Title and description are mandatory' };
+      const { _id, title, description, discount } = params;
+      if (!title | !description) {
+        return { success: false, body: "Title and description are mandatory" };
       }
-      if(!_id){
-        return { success: false, error: 'Need id' };
+      if (!_id) {
+        return { success: false, body: "No id sended" };
       }
-      const result = await this.MongooseServiceInstance.update({_id}, {title, description, discount});
-      if(!result){
-        return { success: false, error: 'Cannot find the item in the database' };
-      }
+      let newDiscount = discount? discount : 0;
+      const result = await this.MongooseServiceInstance.update(
+        { _id },
+        { title, description, discount:newDiscount }
+      );
       return { success: true, body: result };
-    } catch ( err ) {
-      return { success: false, error: err };
+    } catch (err) {
+      return { success: false, body: "Cannot find the category in the database" };
     }
   }
   async delete(params) {
     try {
-      const result = await this.MongooseServiceInstance.delete({params});
+      const result = await this.MongooseServiceInstance.delete({ params });
       return { success: true, body: result };
-    } catch ( err ) {
+    } catch (err) {
       return { success: false, error: err };
     }
   }

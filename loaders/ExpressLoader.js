@@ -5,8 +5,6 @@ var logger = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const favicon = require("serve-favicon");
-var indexRouter = require('../routes/index');
-var usersRouter = require('../routes/users');
 var authRouter = require('../routes/auth');
 var itemRouter = require('../routes/item');
 var categoryRouter = require('../routes/category');
@@ -40,8 +38,7 @@ class ExpressLoader {
         origin: ["http://localhost:3000"], // <== this will be the URL of our React app (it will be running on port 3000)
       })
     );
-    app.use("/", indexRouter);
-    app.use("/users", usersRouter);
+    
     app.use("/auth", authRouter);
     app.use("/item", itemRouter);
     app.use("/category", categoryRouter);
