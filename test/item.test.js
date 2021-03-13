@@ -27,7 +27,7 @@ test('/item/findAll', async () => {
     const item2 = await Item.create({ title: "item 2", description: "Lorem ipsum", price:13, img:'img2', tags:['tag21', 'tag22'] });
     await supertest(app).get("/item/findAll")
       .expect(200).then(async(response)=>{
-        //Success is true
+        //Call doesn't return an error
         expect(response.body.success).toBe(true)
 
         //Body is an array with a length of two
@@ -54,7 +54,7 @@ test('/item/findAll', async () => {
       })
   })
 
-test('/item/findONe/:key/:value', async()=>{
+test('/item/findOne/:key/:value', async()=>{
     const item = await Item.create({ title: "item 1", description: "Lorem ipsum", price:3, img:'img', tags:['tag1', 'tag2'] });
 
   //FindOne by id returns the correct object
@@ -90,7 +90,7 @@ test('/item/create', async()=>{
   const data = { title: "item 1", description: "Lorem ipsum", price:3, img:'img', tags:['tag1', 'tag2']  };
   await supertest(app).post('/item/create').send(data).expect(200).then(async(response)=>{
 
-    //Success is true
+    //Call doesn't return an error
     expect(response.body.success).toBe(true)
 
     //Response properties are equal to data properties
@@ -122,7 +122,7 @@ test('/item/update', async()=>{
   const data = { title: "item 2", description: "Ipsum lorem", price:23, img:'img2', tags:['tag21', 'tag22'], _id:item.id  };;
   await supertest(app).post('/item/update').send(data).expect(200).then(async(response)=>{
 
-    //Success is true
+    //Call doesn't return an error
     expect(response.body.success).toBe(true)
 
     //Response properties are equal to data properties
