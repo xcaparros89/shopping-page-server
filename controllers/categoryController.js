@@ -36,11 +36,11 @@ const CategoryInstance = new Category();
             res.status(500).send(err);
         }
     }
-    // exports.delete = async (req, res, next) => {
-    //     try{
-    //         const deletedCategory = await CategoryInstance.delete(req.body);
-    //         return res.send(deletedCategory);
-    //     } catch (err){
-    //         res.status(500).send(err);
-    //     }
-    // }
+    exports.delete = async (req, res, next) => {
+        try{
+            const deletedCategory = await CategoryInstance.delete(req.params.id);
+            return res.send(deletedCategory);
+        } catch (err){
+            res.status(500).send(err);
+        }
+    }

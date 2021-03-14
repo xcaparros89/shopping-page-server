@@ -336,3 +336,30 @@ test("/category/update with all fields", async () => {
       expect(category2.discount).toBe(data.discount);
     })
     });
+
+    test("/category/delete without correct id", async () => {
+      await supertest(app).get(`/category/delete/incorrectId`)
+      .then(async (response) => {
+      //Call returns an error
+      expect(response.body.success).toBe(false);
+
+      //Error message is the correct one
+      expect(response.body.body).toBe("Cannot find the category in the database")
+    })
+  })
+    test("/category/delete with correct id", async () => {
+      const category = await Category.create({
+        title: "category 1",
+        description: "Lorem ipsum",
+        discount: 3
+      });
+      await supertest(app).get(`/category/delete/${category._id}`)
+      .then(async (response) => {
+        //Call doesn't return an error
+        expect(response.body.success).toBe(true);
+          //Response properties are equal to data properties
+        expect(response.body.body.title).toBe(category.title);
+        expect(response.body.body.description).toBe(category.description);
+        expect(response.body.body.discount).toBe(category.discount);
+    })
+  })

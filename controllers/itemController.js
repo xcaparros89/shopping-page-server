@@ -37,3 +37,12 @@ const ItemInstance = new Item();
             res.status(500).send(err);
         }
     }
+
+    exports.delete = async (req, res, next) => {
+        try{
+            const deletedItem = await ItemInstance.delete(req.params.id);
+            return res.send(deletedItem);
+        } catch (err){
+            res.status(500).send(err);
+        }
+    }

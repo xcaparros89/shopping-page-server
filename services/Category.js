@@ -70,12 +70,12 @@ class Category {
       return { success: false, body: "Cannot find the category in the database" };
     }
   }
-  async delete(params) {
+  async delete(id) {
     try {
-      const result = await this.MongooseServiceInstance.delete({ params });
+      const result = await this.MongooseServiceInstance.delete(id);
       return { success: true, body: result };
     } catch (err) {
-      return { success: false, error: err };
+      return { success: false, body: "Cannot find the category in the database" };
     }
   }
 }

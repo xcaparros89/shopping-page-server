@@ -491,3 +491,30 @@ test("/item/update with all fields", async () => {
       expect(item2.discount).toBe(data.discount);
     });
 });
+
+test("/item/delete without correct id", async () => {
+  await supertest(app).get(`/item/delete/incorrectId`)
+  .then(async (response) => {
+  //Call returns an error
+  expect(response.body.success).toBe(false);
+
+  //Error message is the correct one
+  expect(response.body.body).toBe("Cannot find the item in the database")
+})
+})
+test("/item/delete with correct id", async () => {
+  const item = await Item.create({
+    title: "item 1",
+    description: "Lorem ipsum",
+    discount: 3
+  });
+  await supertest(app).get(`/item/delete/${item._id}`)
+  .then(async (response) => {
+    //Call doesn't return an error
+    expect(response.body.success).toBe(true);
+      //Response properties are equal to data properties
+    expect(response.body.body.title).toBe(item.title);
+    expect(response.body.body.description).toBe(item.description);
+    expect(response.body.body.discount).toBe(item.discount);
+})
+})
