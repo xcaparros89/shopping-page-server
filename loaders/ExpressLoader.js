@@ -7,7 +7,6 @@ var authRouter = require("../routes/auth");
 var itemRouter = require("../routes/item");
 var categoryRouter = require("../routes/category");
 
-const hbs = require("hbs");
 class ExpressLoader {
   constructor() {
     var app = express();

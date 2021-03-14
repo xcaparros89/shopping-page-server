@@ -25,7 +25,6 @@ afterEach((done) => {
 test("/category/findAll There are no categories in the database", async () => {
   await supertest(app)
     .get("/category/findAll")
-    .expect(200)
     .then(async (response) => {
       //Call return an error that says no categories found
       expect(response.body.success).toBe(false);
@@ -44,7 +43,6 @@ test("/category/findAll There are categories in the database", async () => {
   });
   await supertest(app)
     .get("/category/findAll")
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -66,7 +64,6 @@ test("/category/findAll There are categories in the database", async () => {
 test("/category/findONe/:key/:value The category doesn't exist in the database", async () => {
   await supertest(app)
     .get(`/category/findOne/_id/invalidId`)
-    .expect(200)
     .then(async (response) => {
       //Call return an error that says no categories found
       expect(response.body.success).toBe(false);
@@ -83,7 +80,6 @@ test("/category/findONe/:key/:value The category exist in the database", async (
   //FindOne by id returns the correct object
   await supertest(app)
     .get(`/category/findOne/_id/${category.id}`)
-    .expect(200)
     .then(async (response) => {
       expect(response.body.success).toBe(true);
       expect(response.body.body.title).toBe(category.title);
@@ -94,7 +90,6 @@ test("/category/findONe/:key/:value The category exist in the database", async (
   //FindOne by title returns the correct object
   await supertest(app)
     .get(`/category/findOne/title/${category.title}`)
-    .expect(200)
     .then(async (response) => {
       expect(response.body.success).toBe(true);
       expect(response.body.body.title).toBe(category.title);
@@ -108,7 +103,6 @@ test("/category/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/category/create")
     .send({ ...data, title: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -119,7 +113,6 @@ test("/category/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/category/create")
     .send({ ...data, description: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -134,7 +127,6 @@ test("/category/create missing non-mandatory fields", async () => {
   await supertest(app)
     .post("/category/create")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -162,7 +154,6 @@ test("/category/create with all the fields", async () => {
   await supertest(app)
     .post("/category/create")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -198,7 +189,6 @@ test("/category/update without mandatory fields", async () => {
   await supertest(app)
     .post("/category/update")
     .send({ ...data, title: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -210,7 +200,6 @@ test("/category/update without mandatory fields", async () => {
   await supertest(app)
     .post("/category/update")
     .send({ ...data, description: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -222,7 +211,6 @@ test("/category/update without mandatory fields", async () => {
   await supertest(app)
     .post("/category/update")
     .send({ ...data, _id: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -247,7 +235,6 @@ test("/category/update with incorrect id", async () => {
   await supertest(app)
     .post("/category/update")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(false);
@@ -273,7 +260,6 @@ test("/category/update without non-mandatory fields", async () => {
   await supertest(app)
     .post("/category/update")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -314,7 +300,6 @@ test("/category/update with all fields", async () => {
   await supertest(app)
     .post("/category/update")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
