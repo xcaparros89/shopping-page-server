@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const express = require("express");
-const bcrypt = require("bcrypt");
 const Item = require("../models/Item");
 const itemRouter = require("../routes/item");
 
@@ -10,7 +9,6 @@ app.use(express.json());
 app.use("/item", itemRouter);
 
 beforeEach((done) => {
-  //don't coneect to the same server than the real info
   mongoose.connect(
     "mongodb://localhost/shopping-server-test",
     { useNewUrlParser: true, useUnifiedTopology: true },
@@ -27,7 +25,6 @@ afterEach((done) => {
 test("/item/findAll There are no categories in the database", async () => {
   await supertest(app)
     .get("/item/findAll")
-    .expect(200)
     .then(async (response) => {
       //Call return an error that says no categories found
       expect(response.body.success).toBe(false);
@@ -52,7 +49,6 @@ test("/item/findAll There are categories in the database", async () => {
   });
   await supertest(app)
     .get("/item/findAll")
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -84,7 +80,6 @@ test("/item/findAll There are categories in the database", async () => {
 test("/item/findOne/:key/:value The item doesn't exist in the database", async () => {
   await supertest(app)
     .get(`/item/findOne/_id/invalidId`)
-    .expect(200)
     .then(async (response) => {
       //Call return an error that says no items found
       expect(response.body.success).toBe(false);
@@ -104,7 +99,6 @@ test("/item/findOne/:key/:value The item exist in the database", async () => {
   //FindOne by id returns the correct object
   await supertest(app)
     .get(`/item/findOne/_id/${item.id}`)
-    .expect(200)
     .then(async (response) => {
       expect(response.body.success).toBe(true);
       expect(response.body.body.title).toBe(item.title);
@@ -120,7 +114,6 @@ test("/item/findOne/:key/:value The item exist in the database", async () => {
   //FindOne by title returns the correct object
   await supertest(app)
     .get(`/item/findOne/title/${item.title}`)
-    .expect(200)
     .then(async (response) => {
       expect(response.body.success).toBe(true);
       expect(response.body.body.title).toBe(item.title);
@@ -145,7 +138,6 @@ test("/item/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/item/create")
     .send({ ...data, title: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -158,7 +150,6 @@ test("/item/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/item/create")
     .send({ ...data, description: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -171,7 +162,6 @@ test("/item/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/item/create")
     .send({ ...data, price: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -184,7 +174,6 @@ test("/item/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/item/create")
     .send({ ...data, tags: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -197,7 +186,6 @@ test("/item/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/item/create")
     .send({ ...data, img: "" })
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -226,7 +214,6 @@ test("/item/create missing mandatory fields", async () => {
   await supertest(app)
     .post("/item/create")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -249,7 +236,6 @@ test("/item/create missing non-mandatory fields", async () => {
   await supertest(app)
     .post("/item/create")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -288,12 +274,11 @@ test("/item/create with all fields", async () => {
     price: 3,
     img: "img",
     tags: ["tag1", "tag2"],
-    discount: 1
+    discount: 1,
   };
   await supertest(app)
     .post("/item/create")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -343,69 +328,79 @@ test("/item/update without mandatory fields", async () => {
   };
   await supertest(app)
     .post("/item/update")
-    .send({...data, title:'' })
-    .expect(200)
+    .send({ ...data, title: "" })
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe('Title, description, price, tags and img are mandatory');
+      expect(response.body.body).toBe(
+        "Title, description, price, tags and img are mandatory"
+      );
     });
   await supertest(app)
     .post("/item/update")
-    .send({...data, description:'' })
-    .expect(200)
+    .send({ ...data, description: "" })
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe('Title, description, price, tags and img are mandatory');
+      expect(response.body.body).toBe(
+        "Title, description, price, tags and img are mandatory"
+      );
     });
   await supertest(app)
     .post("/item/update")
-    .send({...data, price:'' })
-    .expect(200)
+    .send({ ...data, price: "" })
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe('Title, description, price, tags and img are mandatory');
+      expect(response.body.body).toBe(
+        "Title, description, price, tags and img are mandatory"
+      );
     });
   await supertest(app)
     .post("/item/update")
-    .send({...data, img:'' })
-    .expect(200)
+    .send({ ...data, img: "" })
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe('Title, description, price, tags and img are mandatory');
+      expect(response.body.body).toBe(
+        "Title, description, price, tags and img are mandatory"
+      );
     });
   await supertest(app)
     .post("/item/update")
-    .send({...data, tags:'' })
-    .expect(200)
+    .send({ ...data, tags: "" })
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe('Title, description, price, tags and img are mandatory');
+      expect(response.body.body).toBe(
+        "Title, description, price, tags and img are mandatory"
+      );
     });
   await supertest(app)
     .post("/item/update")
-    .send({...data, _id:'' })
-    .expect(200)
+    .send({ ...data, _id: "" })
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe('No id sended');
+      expect(response.body.body).toBe("No id sended");
     });
 });
 
@@ -423,20 +418,18 @@ test("/item/update with incorrect id", async () => {
     price: 23,
     img: "img2",
     tags: ["tag21", "tag22"],
-    _id: 'incorrectId'
+    _id: "incorrectId",
   };
   await supertest(app)
     .post("/item/update")
     .send(data)
-    .expect(200)
     .then(async (response) => {
+      //Call doesn't return an error
+      expect(response.body.success).toBe(false);
 
-        //Call doesn't return an error
-        expect(response.body.success).toBe(false);
-  
-        //Response properties are equal to data properties
-        expect(response.body.body).toBe("Cannot find the item in the database");
-      });
+      //Response properties are equal to data properties
+      expect(response.body.body).toBe("Cannot find the item in the database");
+    });
 });
 
 test("/item/update with all fields", async () => {
@@ -445,7 +438,7 @@ test("/item/update with all fields", async () => {
     description: "Lorem ipsum",
     price: 3,
     img: "img",
-    discount:5,
+    discount: 5,
     tags: ["tag1", "tag2"],
   });
   const data = {
@@ -453,14 +446,13 @@ test("/item/update with all fields", async () => {
     description: "Ipsum lorem",
     price: 23,
     img: "img2",
-    discount:5,
+    discount: 5,
     tags: ["tag21", "tag22"],
     _id: item.id,
   };
   await supertest(app)
     .post("/item/update")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -493,28 +485,30 @@ test("/item/update with all fields", async () => {
 });
 
 test("/item/delete without correct id", async () => {
-  await supertest(app).get(`/item/delete/incorrectId`)
-  .then(async (response) => {
-  //Call returns an error
-  expect(response.body.success).toBe(false);
+  await supertest(app)
+    .get(`/item/delete/incorrectId`)
+    .then(async (response) => {
+      //Call returns an error
+      expect(response.body.success).toBe(false);
 
-  //Error message is the correct one
-  expect(response.body.body).toBe("Cannot find the item in the database")
-})
-})
+      //Error message is the correct one
+      expect(response.body.body).toBe("Cannot find the item in the database");
+    });
+});
 test("/item/delete with correct id", async () => {
   const item = await Item.create({
     title: "item 1",
     description: "Lorem ipsum",
-    discount: 3
+    discount: 3,
   });
-  await supertest(app).get(`/item/delete/${item._id}`)
-  .then(async (response) => {
-    //Call doesn't return an error
-    expect(response.body.success).toBe(true);
+  await supertest(app)
+    .get(`/item/delete/${item._id}`)
+    .then(async (response) => {
+      //Call doesn't return an error
+      expect(response.body.success).toBe(true);
       //Response properties are equal to data properties
-    expect(response.body.body.title).toBe(item.title);
-    expect(response.body.body.description).toBe(item.description);
-    expect(response.body.body.discount).toBe(item.discount);
-})
-})
+      expect(response.body.body.title).toBe(item.title);
+      expect(response.body.body.description).toBe(item.description);
+      expect(response.body.body.discount).toBe(item.discount);
+    });
+});

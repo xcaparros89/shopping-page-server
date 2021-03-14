@@ -39,7 +39,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, username: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -51,7 +51,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, email: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -63,7 +63,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, password: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -75,7 +75,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, address: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -87,7 +87,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, name: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -98,7 +98,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, surnames: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -109,7 +109,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, city: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -120,7 +120,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, state: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -131,7 +131,7 @@ test("/signup missing fields", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send({ ...data, zip: "" })
-    .expect(200)
+
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -172,7 +172,6 @@ test("/signup email already registered", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -213,7 +212,6 @@ test("/signup username already registered", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -239,7 +237,6 @@ test("/signup", async () => {
   await supertest(app)
     .post("/auth/signup")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
@@ -282,7 +279,6 @@ test("/login user incorrect", async () => {
   await supertest(app)
     .post("/auth/login")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -315,7 +311,6 @@ test("/login password incorrect", async () => {
   await supertest(app)
     .post("/auth/login")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
@@ -348,7 +343,6 @@ test("/login user and password correct", async () => {
   await supertest(app)
     .post("/auth/login")
     .send(data)
-    .expect(200)
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);

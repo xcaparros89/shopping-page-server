@@ -1,14 +1,14 @@
-const MongooseService = require( "./MongooseService" ); // Data Access Layer
-const UserModel = require( "../models/user" ); // Database Model
+const MongooseService = require("./MongooseService"); // Data Access Layer
+const UserModel = require("../models/user"); // Database Model
 const bcrypt = require("bcryptjs");
 
 class User {
   /**
    * @description Create an instance of PostService
    */
-  constructor () {
+  constructor() {
     // Create instance of Data Access layer using our desired model
-    this.MongooseServiceInstance = new MongooseService( UserModel );
+    this.MongooseServiceInstance = new MongooseService(UserModel);
   }
 
   /**
@@ -19,13 +19,20 @@ class User {
    */
   async login(params) {
     try {
-        console.log('params');
-      const result = await this.MongooseServiceInstance.findOne({username: params.username});
-      if(result === null || !bcrypt.compareSync(params.password, result.password)){
-          return {success:false, body:'The user and/or password are incorrect'}
+      const result = await this.MongooseServiceInstance.findOne({
+        username: params.username,
+      });
+      if (
+        result === null ||
+        !bcrypt.compareSync(params.password, result.password)
+      ) {
+        return {
+          success: false,
+          body: "The user and/or password are incorrect",
+        };
       }
       return { success: true, body: result };
-    } catch ( err ) {
+    } catch (err) {
       return { success: false, error: err };
     }
   }
@@ -60,7 +67,9 @@ class User {
         return { success: false, body: "This email is already used" };
       }
 
-      const repeatedUser = await this.MongooseServiceInstance.findOne({ username: username });
+      const repeatedUser = await this.MongooseServiceInstance.findOne({
+        username: username,
+      });
       if (repeatedUser !== null) {
         return { success: false, body: "This username is already used" };
       }
@@ -69,7 +78,7 @@ class User {
       const result = await this.MongooseServiceInstance.create({
         username,
         email,
-        password:hashPass,
+        password: hashPass,
         address,
         name,
         surnames,

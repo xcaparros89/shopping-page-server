@@ -20,7 +20,6 @@ class Item {
     try {
       const {title, description, price, tags, img, discount} = itemToCreate;
       if(!title | !description | !price | !tags | !img){
-        //fes un loop que torni els fields que estan buits.
         return { success: false, body: 'Title, description, price, tags and img are mandatory' };
       }
       const sameTitle = await this.MongooseServiceInstance.findOne({title})
@@ -55,10 +54,8 @@ class Item {
   }
   async update(params) {
     try {
-      //const user = await this.MongooseServiceInstance.findOne({_id: params._id});
       const {_id, title, description, price, tags, img, discount} = params;
       if(!title | !description | !price | !tags | !img){
-        //fes un loop que torni els fields que estan buits.
         return { success: false, body: 'Title, description, price, tags and img are mandatory' };
       }
       if(!_id){

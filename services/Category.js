@@ -18,7 +18,7 @@ class Category {
    */
   async create(categoryToCreate) {
     try {
-      const {title, description} = categoryToCreate;
+      const { title, description } = categoryToCreate;
       if (!title | !description) {
         return { success: false, body: "Title and description are mandatory" };
       }
@@ -45,14 +45,13 @@ class Category {
   async findOne(params) {
     try {
       const result = await this.MongooseServiceInstance.findOne(params);
-        return { success: true, body: result };
+      return { success: true, body: result };
     } catch (err) {
       return { success: false, body: "No categories found" };
     }
   }
   async update(params) {
     try {
-      //const user = await this.MongooseServiceInstance.findOne({_id: params._id});
       const { _id, title, description, discount } = params;
       if (!title | !description) {
         return { success: false, body: "Title and description are mandatory" };
@@ -60,14 +59,17 @@ class Category {
       if (!_id) {
         return { success: false, body: "No id sended" };
       }
-      let newDiscount = discount? discount : 0;
+      let newDiscount = discount ? discount : 0;
       const result = await this.MongooseServiceInstance.update(
         { _id },
-        { title, description, discount:newDiscount }
+        { title, description, discount: newDiscount }
       );
       return { success: true, body: result };
     } catch (err) {
-      return { success: false, body: "Cannot find the category in the database" };
+      return {
+        success: false,
+        body: "Cannot find the category in the database",
+      };
     }
   }
   async delete(id) {
@@ -75,7 +77,10 @@ class Category {
       const result = await this.MongooseServiceInstance.delete(id);
       return { success: true, body: result };
     } catch (err) {
-      return { success: false, body: "Cannot find the category in the database" };
+      return {
+        success: false,
+        body: "Cannot find the category in the database",
+      };
     }
   }
 }

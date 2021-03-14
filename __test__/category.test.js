@@ -9,7 +9,6 @@ app.use(express.json());
 app.use("/category", categoryRouter);
 
 beforeEach((done) => {
-  //don't coneect to the same server than the real info
   mongoose.connect(
     "mongodb://localhost/shopping-server-test",
     { useNewUrlParser: true, useUnifiedTopology: true },
@@ -105,31 +104,29 @@ test("/category/findONe/:key/:value The category exist in the database", async (
 });
 
 test("/category/create missing mandatory fields", async () => {
-  const data = { title: "title", description: "Lorem ipsum", discount:1 };
+  const data = { title: "title", description: "Lorem ipsum", discount: 1 };
   await supertest(app)
     .post("/category/create")
-    .send({...data, title:''})
+    .send({ ...data, title: "" })
     .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe("Title and description are mandatory")
+      expect(response.body.body).toBe("Title and description are mandatory");
     });
   await supertest(app)
     .post("/category/create")
-    .send({...data, description:''})
+    .send({ ...data, description: "" })
     .expect(200)
     .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe("Title and description are mandatory")
+      expect(response.body.body).toBe("Title and description are mandatory");
     });
-
-
 });
 
 test("/category/create missing non-mandatory fields", async () => {
@@ -161,7 +158,7 @@ test("/category/create missing non-mandatory fields", async () => {
     });
 });
 test("/category/create with all the fields", async () => {
-  const data = { title: "category 1", description: "Lorem ipsum", discount:1 };
+  const data = { title: "category 1", description: "Lorem ipsum", discount: 1 };
   await supertest(app)
     .post("/category/create")
     .send(data)
@@ -190,17 +187,17 @@ test("/category/update without mandatory fields", async () => {
   const category = await Category.create({
     title: "category 1",
     description: "Lorem ipsum",
-    discount:1 
+    discount: 1,
   });
   const data = {
     title: "category 2",
     description: "Ipsum lorem",
-    discount:1,
+    discount: 1,
     _id: category.id,
   };
   await supertest(app)
     .post("/category/update")
-    .send({...data, title:'' })
+    .send({ ...data, title: "" })
     .expect(200)
     .then(async (response) => {
       //Call returns an error
@@ -212,7 +209,7 @@ test("/category/update without mandatory fields", async () => {
 
   await supertest(app)
     .post("/category/update")
-    .send({...data, description:'' })
+    .send({ ...data, description: "" })
     .expect(200)
     .then(async (response) => {
       //Call returns an error
@@ -222,9 +219,9 @@ test("/category/update without mandatory fields", async () => {
       expect(response.body.body).toBe("Title and description are mandatory");
     });
 
-    await supertest(app)
+  await supertest(app)
     .post("/category/update")
-    .send({...data, _id:'' })
+    .send({ ...data, _id: "" })
     .expect(200)
     .then(async (response) => {
       //Call returns an error
@@ -239,13 +236,13 @@ test("/category/update with incorrect id", async () => {
   const category = await Category.create({
     title: "category 1",
     description: "Lorem ipsum",
-    discount:1 
+    discount: 1,
   });
   const data = {
     title: "category 2",
     description: "Ipsum lorem",
-    discount:1,
-    _id: 'incorrectId',
+    discount: 1,
+    _id: "incorrectId",
   };
   await supertest(app)
     .post("/category/update")
@@ -256,7 +253,9 @@ test("/category/update with incorrect id", async () => {
       expect(response.body.success).toBe(false);
 
       //Response properties are equal to data properties
-      expect(response.body.body).toBe("Cannot find the category in the database");
+      expect(response.body.body).toBe(
+        "Cannot find the category in the database"
+      );
     });
 });
 
@@ -264,7 +263,7 @@ test("/category/update without non-mandatory fields", async () => {
   const category = await Category.create({
     title: "category 1",
     description: "Lorem ipsum",
-    discount: 3
+    discount: 3,
   });
   const data = {
     title: "category 2",
@@ -278,11 +277,11 @@ test("/category/update without non-mandatory fields", async () => {
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
-        //Response properties are equal to data properties
+      //Response properties are equal to data properties
       expect(response.body.body.title).toBe(data.title);
       expect(response.body.body.description).toBe(data.description);
 
-      //Missing data property is equal to 0 
+      //Missing data property is equal to 0
       expect(response.body.body.discount).toBe(0);
 
       expect(response.body.body._id).toBeTruthy();
@@ -295,16 +294,16 @@ test("/category/update without non-mandatory fields", async () => {
       expect(category2.title).toBe(data.title);
       expect(category2.description).toBe(data.description);
 
-      //Missing data property is equal to 0 
+      //Missing data property is equal to 0
       expect(category2.discount).toBe(0);
-    })
     });
+});
 
 test("/category/update with all fields", async () => {
   const category = await Category.create({
     title: "category 1",
     description: "Lorem ipsum",
-    discount: 3
+    discount: 3,
   });
   const data = {
     title: "category 2",
@@ -319,7 +318,7 @@ test("/category/update with all fields", async () => {
     .then(async (response) => {
       //Call doesn't return an error
       expect(response.body.success).toBe(true);
-        //Response properties are equal to data properties
+      //Response properties are equal to data properties
       expect(response.body.body.title).toBe(data.title);
       expect(response.body.body.description).toBe(data.description);
       expect(response.body.body.discount).toBe(data.discount);
@@ -334,32 +333,37 @@ test("/category/update with all fields", async () => {
       expect(category2.title).toBe(data.title);
       expect(category2.description).toBe(data.description);
       expect(category2.discount).toBe(data.discount);
-    })
     });
+});
 
-    test("/category/delete without correct id", async () => {
-      await supertest(app).get(`/category/delete/incorrectId`)
-      .then(async (response) => {
+test("/category/delete without correct id", async () => {
+  await supertest(app)
+    .get(`/category/delete/incorrectId`)
+    .then(async (response) => {
       //Call returns an error
       expect(response.body.success).toBe(false);
 
       //Error message is the correct one
-      expect(response.body.body).toBe("Cannot find the category in the database")
-    })
-  })
-    test("/category/delete with correct id", async () => {
-      const category = await Category.create({
-        title: "category 1",
-        description: "Lorem ipsum",
-        discount: 3
-      });
-      await supertest(app).get(`/category/delete/${category._id}`)
-      .then(async (response) => {
-        //Call doesn't return an error
-        expect(response.body.success).toBe(true);
-          //Response properties are equal to data properties
-        expect(response.body.body.title).toBe(category.title);
-        expect(response.body.body.description).toBe(category.description);
-        expect(response.body.body.discount).toBe(category.discount);
-    })
-  })
+      expect(response.body.body).toBe(
+        "Cannot find the category in the database"
+      );
+    });
+});
+test("/category/delete with correct id", async () => {
+  const category = await Category.create({
+    title: "category 1",
+    description: "Lorem ipsum",
+    discount: 3,
+  });
+  await supertest(app)
+    .get(`/category/delete/${category._id}`)
+    .then(async (response) => {
+      //Call doesn't return an error
+      expect(response.body.success).toBe(true);
+
+      //Response properties are equal to data properties
+      expect(response.body.body.title).toBe(category.title);
+      expect(response.body.body.description).toBe(category.description);
+      expect(response.body.body.discount).toBe(category.discount);
+    });
+});
