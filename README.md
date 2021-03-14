@@ -21,4 +21,4 @@ Write in the console:
 Write in the console:
 - npm test
 
-It has test for all the options of every route, you can find the tests in the \__test__ folder.
+It has test for all the options of every route, you can find the tests in the \_\_test\_\_ folder.
