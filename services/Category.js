@@ -14,7 +14,7 @@ class Category {
    * @description Attempt to create a post with the provided object
    * @param postToCreate {object} Object containing all required fields to
    * create post
-   * @returns {Promise<{success: boolean, error: *}|{success: boolean, body: *}>}
+   * @returns {Promise<{success: boolean, body: *}|{success: boolean, body: *}>}
    */
   async create(categoryToCreate) {
     try {
@@ -27,7 +27,7 @@ class Category {
       );
       return { success: true, body: result };
     } catch (err) {
-      return { success: false, error: err };
+      return { success: false, body: err };
     }
   }
   async findAll() {
@@ -39,7 +39,7 @@ class Category {
         return { success: false, body: "No categories found" };
       }
     } catch (err) {
-      return { success: false, error: err };
+      return { success: false, body: err };
     }
   }
   async findOne(params) {

@@ -15,7 +15,7 @@ class User {
    * @description Attempt to create a post with the provided object
    * @param postToCreate {object} Object containing all required fields to
    * create post
-   * @returns {Promise<{success: boolean, error: *}|{success: boolean, body: *}>}
+   * @returns {Promise<{success: boolean, body: *}|{success: boolean, body: *}>}
    */
   async login(params) {
     try {
@@ -33,7 +33,7 @@ class User {
       }
       return { success: true, body: result };
     } catch (err) {
-      return { success: false, error: err };
+      return { success: false, body: err };
     }
   }
 
@@ -47,6 +47,7 @@ class User {
     city,
     state,
     zip,
+    isAdmin,
   }) {
     try {
       if (
@@ -73,6 +74,7 @@ class User {
       if (repeatedUser !== null) {
         return { success: false, body: "This username is already used" };
       }
+      let newIsAdmin = isAdmin? isAdmin : false;
       const salt = bcrypt.genSaltSync(10);
       const hashPass = bcrypt.hashSync(password, salt);
       const result = await this.MongooseServiceInstance.create({
@@ -85,10 +87,11 @@ class User {
         city,
         state,
         zip,
+        isAdmin: newIsAdmin
       });
       return { success: true, body: result };
     } catch (err) {
-      return { success: false, error: err };
+      return { success: false, body: err };
     }
   }
 }

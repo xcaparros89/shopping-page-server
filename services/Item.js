@@ -14,7 +14,7 @@ class Item {
    * @description Attempt to create a post with the provided object
    * @param postToCreate {object} Object containing all required fields to
    * create post
-   * @returns {Promise<{success: boolean, error: *}|{success: boolean, body: *}>}
+   * @returns {Promise<{success: boolean, body: *}|{success: boolean, body: *}>}
    */
   async create ( itemToCreate ) {
     try {
